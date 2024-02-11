@@ -1,37 +1,37 @@
-import 'package:aplikasi_daftar_angota_perpus/category/horor.dart';
+import 'package:aplikasi_daftar_angota_perpus/category/sejarah.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/pendidikan.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/drawer/drawer.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../category/adventure.dart';
+import '../../category/dongeng.dart';
 
 // ignore: must_be_immutable
 class halamanbuku extends StatefulWidget {
-  var c1;
-  var c2;
-  var c3;
-  var c4;
-
-  halamanbuku({@required this.c1});
-
   @override
   State<halamanbuku> createState() => _halamanbukuState();
 }
 
-String judulAdventure = 'Judul  Buku Advemture';
-List<String> katakata = judulAdventure.split(' ');
-String judulTerpotong = katakata.take(18).join(' ');
-
 class _halamanbukuState extends State<halamanbuku> {
-  void initState() {
-    super.initState();
-    print(widget.c1);
-  }
-
   @override
   Widget build(BuildContext context) {
     // final MediaQueryHeight = MediaQuery.of(context).size.height;
     // final MediaQuerywidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Buku',
+          style: GoogleFonts.lato(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1),
+        ),
+        backgroundColor: Color(0xfff012ac0),
+        automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      drawer: MyDrawer(),
       resizeToAvoidBottomInset: false,
       // backgroundColor: Colors.white,
       body: SafeArea(
@@ -106,27 +106,38 @@ class _halamanbukuState extends State<halamanbuku> {
               //   height: 5,
               // ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Dongeng',
+                      'Pendidikan',
                       style: GoogleFonts.lato(
                           fontWeight: FontWeight.bold, letterSpacing: 1),
                     ),
-                    Icon(Icons.arrow_right),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => hasil(kategori: 'Pendidikan'),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_right),
+                    ),
                   ],
                 ),
               ),
-              adventure(c1: widget.c1),
+              // pendidikan(kategori: 'Pendidikan'),
+              pendidikan(kategori: ['Pendidikan']),
               SizedBox(
-                height: 15,
+                height: 5,
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -135,30 +146,49 @@ class _halamanbukuState extends State<halamanbuku> {
                       style: GoogleFonts.lato(
                           fontWeight: FontWeight.bold, letterSpacing: 1),
                     ),
-                    Icon(Icons.arrow_right),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => hasil(kategori: 'Sejarah'),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_right),
+                    ),
                   ],
                 ),
               ),
-              horor(c2: widget.c2),
+              sejarah(kategori: 'Sejarah'),
               SizedBox(
-                height: 15,
+                height: 5,
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Pendidikan',
+                      'Dongeng',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, letterSpacing: 1),
                     ),
-                    Icon(Icons.arrow_right),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => hasil(kategori: 'Dongeng'),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_right),
+                    ),
                   ],
                 ),
               ),
-              pendidikan(c3: widget.c3)
+              dongeng(kategori: 'Dongeng')
             ],
           ),
         ),

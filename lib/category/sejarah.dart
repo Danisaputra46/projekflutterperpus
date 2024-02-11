@@ -5,19 +5,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // ignore: must_be_immutable
-class pendidikan extends StatefulWidget {
-  // final String kategori;
-  final List<String> kategori;
-  pendidikan({required this.kategori});
+class sejarah extends StatefulWidget {
+  final String kategori;
+  sejarah({required this.kategori});
 
   @override
-  State<pendidikan> createState() => pendidikanState();
+  State<sejarah> createState() => _sejarahState();
 }
 
-class pendidikanState extends State<pendidikan> {
+class _sejarahState extends State<sejarah> {
   List<dynamic> daftarBuku = [];
-  bool isLoading = true;
 
+  bool isLoading = true;
+  @override
   void initState() {
     super.initState();
     // Panggil fungsi untuk memuat data buku saat widget diinisialisasi
@@ -25,49 +25,25 @@ class pendidikanState extends State<pendidikan> {
   }
 
   // Fungsi untuk memuat data buku dari backend Laravel Anda
-  // void _loadDataBuku(String kategori) async {
-  //   try {
-  //     final response = await BukuService().kategori(kategori);
-
-  //     if (response.statusCode == 200) {
-  //       // Jika respons berhasil (status code 200), parse respons JSON
-  //       var responseData = json.decode(response.body);
-  //       // Simpan data buku ke dalam variabel daftarBuku di state widget
-  //       await Future.delayed(Duration(milliseconds: 500));
-  //       setState(() {
-  //         daftarBuku = responseData['data'];
-  //         isLoading = false;
-  //       });
-  //     } else {
-  //       // Jika respons tidak berhasil, tampilkan pesan kesalahan
-  //       print('Gagal memuat data: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     // Tangani kesalahan saat melakukan HTTP request
-  //     print('Terjadi kesalahan: $error');
-  //   }
-  // }
-// Fungsi untuk memuat data buku dari backend Laravel Anda
-  void _loadDataBuku(List<String> kategori) async {
+  void _loadDataBuku(String kategori) async {
     try {
-      // Untuk setiap kategori, panggil fungsi untuk memuat data buku
-      for (String kategoriItem in kategori) {
-        final response = await BukuService().kategori(kategoriItem);
+      // Ganti URL sesuai dengan URL endpoint API Anda
+      // var url = Uri.parse('http://192.168.1.14:8000/api/daftarbuku/$kategori');
+      // var response = await http.get(url);
+      final response = await BukuService().kategori(kategori);
 
-        if (response.statusCode == 200) {
-          // Jika respons berhasil (status code 200), parse respons JSON
-          var responseData = json.decode(response.body);
-          // Simpan data buku ke dalam variabel daftarBuku di state widget
-          await Future.delayed(Duration(milliseconds: 500));
-          setState(() {
-            daftarBuku.addAll(responseData[
-                'data']); // Menggabungkan daftar buku dari berbagai kategori
-            isLoading = false;
-          });
-        } else {
-          // Jika respons tidak berhasil, tampilkan pesan kesalahan
-          print('Gagal memuat data: ${response.statusCode}');
-        }
+      if (response.statusCode == 200) {
+        // Jika respons berhasil (status code 200), parse respons JSON
+        var responseData = json.decode(response.body);
+        // Simpan data buku ke dalam variabel daftarBuku di state widget
+        await Future.delayed(Duration(milliseconds: 500));
+        setState(() {
+          daftarBuku = responseData['data'];
+          isLoading = false;
+        });
+      } else {
+        // Jika respons tidak berhasil, tampilkan pesan kesalahan
+        print('Gagal memuat data: ${response.statusCode}');
       }
     } catch (error) {
       // Tangani kesalahan saat melakukan HTTP request
@@ -78,6 +54,7 @@ class pendidikanState extends State<pendidikan> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: MediaQueryHeight * 0.36,
       height: 240,
       child: isLoading
           ? Center(
@@ -86,8 +63,9 @@ class pendidikanState extends State<pendidikan> {
               ),
             )
           : ListView.builder(
-              itemCount: daftarBuku.length,
               scrollDirection: Axis.horizontal,
+              // shrinkWrap: true,
+              itemCount: daftarBuku.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -104,6 +82,7 @@ class pendidikanState extends State<pendidikan> {
                     children: [
                       Container(
                         height: 210,
+                        // height: MediaQueryHeight * 0.25,
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
@@ -112,6 +91,7 @@ class pendidikanState extends State<pendidikan> {
                                 blurRadius: 5,
                                 offset: Offset(1, 1))
                           ],
+                          // color: Colors.black,
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                               image: NetworkImage(
@@ -127,10 +107,12 @@ class pendidikanState extends State<pendidikan> {
                       Text(
                         daftarBuku[index]['judul'],
                         style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[900],
-                            fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                          color: Colors.grey[900],
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow
+                            .ellipsis, // Menambahkan ellipsis jika teks melebihi batasan
                       )
                     ],
                   ),

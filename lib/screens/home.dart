@@ -35,6 +35,7 @@ class _HomeState extends State<Home> {
         _streamController.add(DateTime.now());
       }
     });
+    _delayedPageLoad();
   }
 
   void dispose() {
@@ -42,6 +43,16 @@ class _HomeState extends State<Home> {
       _streamController.close();
     }
     super.dispose();
+  }
+
+  bool isPageLoaded = false;
+
+  void _delayedPageLoad() {
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        isPageLoaded = true; // Setelah 1 detik, halaman dianggap sudah ter-load
+      });
+    });
   }
 
   Future<void> getUserData() async {
@@ -205,7 +216,9 @@ class _HomeState extends State<Home> {
                             ],
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return CircularProgressIndicator(
+                            color: Color(0xfff012ac0),
+                          );
                         }
                       },
                     ),
@@ -257,14 +270,18 @@ class _HomeState extends State<Home> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, top: 5),
-                          child: Text(
-                            totalAnggota.toString(),
-                            style: GoogleFonts.lato(
-                                color: Colors.black54,
-                                letterSpacing: 1,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900),
-                          ),
+                          child: !isPageLoaded
+                              ? CircularProgressIndicator(
+                                  color: Colors.blue,
+                                )
+                              : Text(
+                                  totalAnggota.toString(),
+                                  style: GoogleFonts.lato(
+                                      color: Colors.black54,
+                                      letterSpacing: 1,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900),
+                                ),
                         ),
                       ],
                     ),
@@ -322,14 +339,18 @@ class _HomeState extends State<Home> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, top: 5),
-                          child: Text(
-                            anggotaCowo.toString(),
-                            style: GoogleFonts.lato(
-                                color: Colors.black54,
-                                letterSpacing: 1,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900),
-                          ),
+                          child: !isPageLoaded
+                              ? CircularProgressIndicator(
+                                  color: Colors.green,
+                                )
+                              : Text(
+                                  anggotaCowo.toString(),
+                                  style: GoogleFonts.lato(
+                                      color: Colors.black54,
+                                      letterSpacing: 1,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900),
+                                ),
                         ),
                       ],
                     ),
@@ -391,15 +412,19 @@ class _HomeState extends State<Home> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, top: 5),
-                          child: Text(
-                            anggotaCewe.toString(),
-                            style: GoogleFonts.lato(
-                              color: Colors.black54,
-                              letterSpacing: 1,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
+                          child: !isPageLoaded
+                              ? CircularProgressIndicator(
+                                  color: Colors.red,
+                                )
+                              : Text(
+                                  anggotaCewe.toString(),
+                                  style: GoogleFonts.lato(
+                                    color: Colors.black54,
+                                    letterSpacing: 1,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
                         ),
                       ],
                     ),

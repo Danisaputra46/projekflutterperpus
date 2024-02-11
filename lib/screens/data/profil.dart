@@ -27,7 +27,7 @@ class _ProfilState extends State<Profil> {
     super.initState();
     // Panggil metode untuk mengambil data dari SharedPreferences saat widget diinisialisasi
     getUserData();
-
+    _delayedPageLoad();
     // Panggil fetchData untuk mengambil data berdasarkan userId
     // fetchDataByIdFluterUser(1);
   }
@@ -81,6 +81,16 @@ class _ProfilState extends State<Profil> {
     }
   }
 
+  bool isPageLoaded = false;
+
+  void _delayedPageLoad() {
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        isPageLoaded = true; // Setelah 1 detik, halaman dianggap sudah ter-load
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,445 +108,451 @@ class _ProfilState extends State<Profil> {
           // backgroundColor: Colors.green,
           backgroundColor: Color(0xfff012ac0),
           automaticallyImplyLeading: false),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
-        child: Container(
-          // color: Color.fromARGB(255, 241, 241, 241),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          maxRadius: 50,
-                          minRadius: 50,
-                          // backgroundImage: AssetImage('assets/profil/profil.png'),
-                          backgroundImage:
-                              _getProfileImage(anggotaData['jeniskelamin']),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+      body: !isPageLoaded
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Color(0xfff012ac0),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Container(
+                // color: Color.fromARGB(255, 241, 241, 241),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${anggotaData['nama']}'.toUpperCase(),
-                                style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1,
+                              CircleAvatar(
+                                maxRadius: 50,
+                                minRadius: 50,
+                                // backgroundImage: AssetImage('assets/profil/profil.png'),
+                                backgroundImage: _getProfileImage(
+                                    anggotaData['jeniskelamin']),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${anggotaData['nama']}'.toUpperCase(),
+                                      style: GoogleFonts.lato(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${anggotaData['email']}',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 1),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
-                                '${anggotaData['email']}',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1),
-                              )
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 2,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                IntrinsicHeight(
-                  child: Row(
-                    children: [
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 32),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 2,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      IntrinsicHeight(
+                        child: Row(
                           children: [
-                            Text(
-                              'Nik',
-                              style: GoogleFonts.lato(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                letterSpacing: 1,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 32),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Nik',
+                                    style: GoogleFonts.lato(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${anggotaData['nik']}',
+                                    style: GoogleFonts.lato(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              '${anggotaData['nik']}',
-                              style: GoogleFonts.lato(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1),
+                            Container(
+                              height: 90, // Adjust the height as needed
+                              child: VerticalDivider(
+                                width: 50,
+                                thickness: 2,
+                                color: Colors.grey.shade400,
+                                indent: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nomor HP',
+                                  style: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  '${anggotaData['notelpon']}',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      Container(
-                        height: 90, // Adjust the height as needed
-                        child: VerticalDivider(
-                          width: 50,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 2,
                           thickness: 2,
                           color: Colors.grey.shade400,
-                          indent: 5,
-                          endIndent: 5,
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nomor HP',
-                            style: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                              fontSize: 16,
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Divider(
+                        thickness: 10,
+                        color: Colors.grey.shade300,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.school_rounded,
+                                color: Color(0xfff012ac0),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  '${anggotaData['pendidikanterakhir']}',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 30,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.work_rounded,
+                                color: Color(0xfff012ac0),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  '${(anggotaData['profesi'])}',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    // color: Colors.gre,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Image.asset(
+                                  'assets/profil/office.png',
+                                  width: 20,
+                                  color: Color(0xfff012ac0),
+                                ),
+                              ),
+                              // Icon(Icons.wallet),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    '${anggotaData['intansisekolah']}',
+                                    style: GoogleFonts.lato(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Image.asset(
+                                  'assets/profil/location.png',
+                                  width: 20,
+                                  color: Color(0xfff012ac0),
+                                ),
+                              ),
+                              // Icon(Icons.),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    '${anggotaData['alamatsekarang']}',
+                                    style: GoogleFonts.lato(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Image.asset(
+                                  'assets/profil/male-and-female.png',
+                                  width: 20,
+                                  color: Color(0xfff012ac0),
+                                ),
+                              ),
+                              // Icon(Icons.man),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  '${anggotaData['jeniskelamin']}',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_month,
+                                color: Color(0xfff012ac0),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  '${anggotaData['tgllahir']}',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 10,
+                        color: Colors.grey.shade300,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: InkWell(
+                          onTap: () {
+                            restartApp();
+                          },
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.exit_to_app,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    'Exit',
+                                    style: GoogleFonts.lato(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            '${anggotaData['notelpon']}',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Divider(
+                          height: 40,
+                          thickness: 2,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 10,
+                        color: Colors.grey.shade300,
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 2,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Divider(
-                  thickness: 10,
-                  color: Colors.grey.shade300,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.school_rounded,
-                          color: Color(0xfff012ac0),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Flexible(
-                          child: Text(
-                            '${anggotaData['pendidikanterakhir']}',
-                            style: GoogleFonts.lato(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 30,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.work_rounded,
-                          color: Color(0xfff012ac0),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Flexible(
-                          child: Text(
-                            '${(anggotaData['profesi'])}',
-                            style: GoogleFonts.lato(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              // color: Colors.gre,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3),
-                          child: Image.asset(
-                            'assets/profil/office.png',
-                            width: 20,
-                            color: Color(0xfff012ac0),
-                          ),
-                        ),
-                        // Icon(Icons.wallet),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              '${anggotaData['intansisekolah']}',
-                              style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3),
-                          child: Image.asset(
-                            'assets/profil/location.png',
-                            width: 20,
-                            color: Color(0xfff012ac0),
-                          ),
-                        ),
-                        // Icon(Icons.),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              '${anggotaData['alamatsekarang']}',
-                              style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3),
-                          child: Image.asset(
-                            'assets/profil/male-and-female.png',
-                            width: 20,
-                            color: Color(0xfff012ac0),
-                          ),
-                        ),
-                        // Icon(Icons.man),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Flexible(
-                          child: Text(
-                            '${anggotaData['jeniskelamin']}',
-                            style: GoogleFonts.lato(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month,
-                          color: Color(0xfff012ac0),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Flexible(
-                          child: Text(
-                            '${anggotaData['tgllahir']}',
-                            style: GoogleFonts.lato(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  thickness: 10,
-                  color: Colors.grey.shade300,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: InkWell(
-                    onTap: () {
-                      restartApp();
-                    },
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.exit_to_app,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Flexible(
-                            child: Text(
-                              'Exit',
-                              style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Divider(
-                    height: 40,
-                    thickness: 2,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  thickness: 10,
-                  color: Colors.grey.shade300,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

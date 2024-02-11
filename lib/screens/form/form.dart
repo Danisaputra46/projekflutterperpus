@@ -25,6 +25,7 @@ class _MyFormPageState extends State<MyFormPage> {
     super.initState();
     // Panggil metode untuk mengambil data dari SharedPreferences saat widget diinisialisasi
     getLoginData();
+    _delayedPageLoad();
   }
 
   late String userName;
@@ -82,6 +83,16 @@ class _MyFormPageState extends State<MyFormPage> {
     }
   }
 
+  bool isPageLoaded = false;
+
+  void _delayedPageLoad() {
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        isPageLoaded = true; // Setelah 1 detik, halaman dianggap sudah ter-load
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryWidht = MediaQuery.of(context).size.width;
@@ -101,611 +112,638 @@ class _MyFormPageState extends State<MyFormPage> {
           backgroundColor: Color(0xfff012ac0),
           centerTitle: true,
           automaticallyImplyLeading: false),
-      body: SafeArea(
-        child: Container(
-          color: Color.fromARGB(255, 241, 241, 241),
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Container(
-                  padding: EdgeInsets.all(10), // Atur jarak dari tepi
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      TextFormField(
-                        readOnly:
-                            true, // Menetapkan agar hanya angka yang dapat dimasukkan
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          // prefixIcon: Icon(
-                          //   Icons.verified,
-                          //   color: Colors.green,
-                          // ),
-                          hintText: 'ID : $userId',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w900, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'NIK:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                          color: Colors.grey.shade600,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1,
-                        ),
-                        controller: _nikController,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(16),
-                        ], // Menetapkan agar hanya angka yang dapat dimasukkan
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          // prefixIcon: Icon(
-                          //   Icons.account_circle,
-                          //   color: Colors.green,
-                          //   size: 30,
-                          // ),
-                          hintText: 'Masukan NIK',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Nik Tidak Boleh Kosong";
-                          } else if (value.length != 16) {
-                            return "NIK harus terdiri dari 16 angka";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Nama:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1),
-                        controller: _namaController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          hintText: 'Masukan Nama',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                        textCapitalization: TextCapitalization.characters,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Nama Tidak Boleh Kosong";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pendidikan Terakhir:',
-                            style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5),
-                          ),
-                          SizedBox(height: 10),
-                          InputDecorator(
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: _pendidikanterakhir,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    _pendidikanterakhir = newValue!;
-                                  });
-                                },
-                                items:
-                                    _schoolTypes.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.lato(
-                                            color: Colors.grey.shade600,
-                                            fontWeight: FontWeight.w900,
-                                            letterSpacing: 1),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                          height:
-                              10), // Tambahkan jarak antara Pendidikan Terakhir dan Status/Profesi
-                      // Status/Profesi
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Status/Profesi:',
-                            style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1),
-                          ),
-                          SizedBox(height: 10),
-                          InputDecorator(
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: _listprofesi,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    _listprofesi = newValue!;
-                                  });
-                                },
-                                items: profesi.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.lato(
-                                          color: Colors.grey.shade600,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        padding:
-                            EdgeInsets.all(10.0), // Tambahkan padding di sini
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey, // Warna border
-                            width: 1.0, // Lebar border
-                          ),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(8.0)), // Radius sudut border
-                        ),
+      body: !isPageLoaded
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Color(0xfff012ac0),
+              ),
+            )
+          : SafeArea(
+              child: Container(
+                color: Color.fromARGB(255, 241, 241, 241),
+                child: Form(
+                  key: formKey,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10), // Atur jarak dari tepi
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            TextFormField(
+                              readOnly:
+                                  true, // Menetapkan agar hanya angka yang dapat dimasukkan
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                // prefixIcon: Icon(
+                                //   Icons.verified,
+                                //   color: Colors.green,
+                                // ),
+                                hintText: 'ID : $userId',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.number,
+                            ),
+                            SizedBox(height: 20),
                             Text(
-                              'Jenis Kelamin:',
+                              'NIK:',
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   letterSpacing: 1),
                             ),
-                            RadioListTile(
-                              activeColor: Color(0xfff012ac0),
-                              title: Text(
-                                'Laki-laki',
-                                style: GoogleFonts.lato(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1),
-                              ),
-                              value: 'Laki-laki',
-                              groupValue: _gender,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  _gender = value;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              activeColor: Color(0xfff012ac0),
-                              title: Text(
-                                'Perempuan',
-                                style: GoogleFonts.lato(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1),
-                              ),
-                              value: 'Perempuan',
-                              groupValue: _gender,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  _gender = value;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-                      Text(
-                        'Email:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1),
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          hintText: 'Masukan Email',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value != null && value.isNotEmpty) {
-                            if (!_emailRegExp.hasMatch(value)) {
-                              return "Isi Email Dengan Benar";
-                            }
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Alamat Sesuai KTP:',
-                            style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1),
-                          ),
-                          Container(
-                            width: mediaQueryWidht * 0.427,
-                            child: Text(
-                              'Alamat Sekarang:',
+                            SizedBox(height: 5),
+                            TextFormField(
                               style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 100,
-                              width: mediaQueryWidht * 0.429,
-                              // width: 178,
-
-                              child: Container(
-                                child: TextFormField(
-                                  style: GoogleFonts.lato(
-                                      color: Colors.grey.shade600,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: 1),
-                                  controller: _alamatktp,
-                                  decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade600),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                      color: Color(0xfff012ac0),
-                                    )),
-                                    contentPadding: EdgeInsets.only(
-                                        right: 5, left: 10, top: 5, bottom: 5),
-                                    // hintText: 'Masukan Alamat Sesuai KTP',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Alamat TIdak Boleh Kosong";
-                                    }
-                                    return null;
-                                  },
-                                  maxLines: 4,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Container(
-                                height: 100,
-                                width: mediaQueryWidht * 0.429,
-                                // width: 178,
-                                child: Container(
-                                  child: TextFormField(
-                                    style: GoogleFonts.lato(
-                                        color: Colors.grey.shade600,
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 1),
-                                    controller: _alamatsekarang,
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey.shade600),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                        color: Color(0xfff012ac0),
-                                      )),
-                                      contentPadding: EdgeInsets.only(
-                                          bottom: 5,
-                                          right: 5,
-                                          top: 5,
-                                          left: 10),
-                                      // hintText: 'Masukan Alamat Sesuai KTP',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    maxLines: 4,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              activeColor: Color(0xfff012ac0),
-                              value: isAlamatSesuaiKTP,
-                              onChanged: (value) {
-                                setState(() {
-                                  isAlamatSesuaiKTP = value ?? false;
-                                  if (isAlamatSesuaiKTP) {
-                                    _alamatsekarang.text = _alamatktp.text;
-                                  } else {
-                                    _alamatsekarang.text = '';
-                                  }
-                                });
-                              }),
-                          Text(
-                            "Silahkan Klik Di Sini Jika Alamat Sama",
-                            style: GoogleFonts.lato(
+                                color: Colors.grey.shade600,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 1,
-                                color: Color(0xfff012ac0)),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Nama Intansi/Sekolah:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1),
-                        controller: _namaSekolah,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          hintText: 'Masukan Nama Intansi/Sekolah',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'No. Telp. / Handphon:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1),
-                        controller: _nomorhp,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(13),
-                        ], // Menetapkan agar hanya angka yang dapat dimasukkan
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          hintText: 'Masukan Nomor HP',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Nomor HP Tidak Boleh Kosong";
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Tempat/Tgl Lahir:',
-                        style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: GoogleFonts.lato(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1),
-                        controller: _tglLahir,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade600),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color(0xfff012ac0),
-                          )),
-                          hintText: 'Samarinda, 02/02/2002',
-                          hintStyle: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600, letterSpacing: 1),
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Tanggal Lahir Tidak Boleh Kosong";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xfff012ac0),
-                        ),
-                        onPressed: () async {
-                          if (_gender == null) {
-                            scaffoldMessengerKey.currentState
-                                ?.hideCurrentSnackBar();
-                            errorSnackBar(
-                                context, 'Jenis Kelamin Tidak Boleh Kosong');
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            //   content: Text(
-                            //     'Jenis Kelamin Tidak Boleh Kosong',
-                            //     style: GoogleFonts.lato(
-                            //         fontWeight: FontWeight.bold,
-                            //         letterSpacing: 1),
+                              ),
+                              controller: _nikController,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(16),
+                              ], // Menetapkan agar hanya angka yang dapat dimasukkan
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                // prefixIcon: Icon(
+                                //   Icons.account_circle,
+                                //   color: Colors.green,
+                                //   size: 30,
+                                // ),
+                                hintText: 'Masukan NIK',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Nik Tidak Boleh Kosong";
+                                } else if (value.length != 16) {
+                                  return "NIK harus terdiri dari 16 angka";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Nama:',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1),
+                            ),
+                            SizedBox(height: 5),
+                            TextFormField(
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1),
+                              controller: _namaController,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                hintText: 'Masukan Nama',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Nama Tidak Boleh Kosong";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Pendidikan Terakhir:',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5),
+                                ),
+                                SizedBox(height: 10),
+                                InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 20.0),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: _pendidikanterakhir,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _pendidikanterakhir = newValue!;
+                                        });
+                                      },
+                                      items: _schoolTypes
+                                          .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.lato(
+                                                  color: Colors.grey.shade600,
+                                                  fontWeight: FontWeight.w900,
+                                                  letterSpacing: 1),
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                                height:
+                                    10), // Tambahkan jarak antara Pendidikan Terakhir dan Status/Profesi
+                            // Status/Profesi
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Status/Profesi:',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1),
+                                ),
+                                SizedBox(height: 10),
+                                InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: _listprofesi,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _listprofesi = newValue!;
+                                        });
+                                      },
+                                      items:
+                                          profesi.map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.lato(
+                                                color: Colors.grey.shade600,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              padding: EdgeInsets.all(
+                                  10.0), // Tambahkan padding di sini
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey, // Warna border
+                                  width: 1.0, // Lebar border
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    8.0)), // Radius sudut border
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Jenis Kelamin:',
+                                    style: GoogleFonts.lato(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1),
+                                  ),
+                                  RadioListTile(
+                                    activeColor: Color(0xfff012ac0),
+                                    title: Text(
+                                      'Laki-laki',
+                                      style: GoogleFonts.lato(
+                                          color: Colors.grey.shade600,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 1),
+                                    ),
+                                    value: 'Laki-laki',
+                                    groupValue: _gender,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _gender = value;
+                                      });
+                                    },
+                                  ),
+                                  RadioListTile(
+                                    activeColor: Color(0xfff012ac0),
+                                    title: Text(
+                                      'Perempuan',
+                                      style: GoogleFonts.lato(
+                                          color: Colors.grey.shade600,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 1),
+                                    ),
+                                    value: 'Perempuan',
+                                    groupValue: _gender,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _gender = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(height: 10),
+                            Text(
+                              'Email:',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1),
+                            ),
+                            SizedBox(height: 5),
+                            TextFormField(
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1),
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                hintText: 'Masukan Email',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value != null && value.isNotEmpty) {
+                                  if (!_emailRegExp.hasMatch(value)) {
+                                    return "Isi Email Dengan Benar";
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Alamat Sesuai KTP:',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1),
+                                ),
+                                Container(
+                                  width: mediaQueryWidht * 0.427,
+                                  child: Text(
+                                    'Alamat Sekarang:',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: mediaQueryWidht * 0.429,
+                                    // width: 178,
+
+                                    child: Container(
+                                      child: TextFormField(
+                                        style: GoogleFonts.lato(
+                                            color: Colors.grey.shade600,
+                                            fontWeight: FontWeight.w900,
+                                            letterSpacing: 1),
+                                        controller: _alamatktp,
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey.shade600),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                            color: Color(0xfff012ac0),
+                                          )),
+                                          contentPadding: EdgeInsets.only(
+                                              right: 5,
+                                              left: 10,
+                                              top: 5,
+                                              bottom: 5),
+                                          // hintText: 'Masukan Alamat Sesuai KTP',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Alamat TIdak Boleh Kosong";
+                                          }
+                                          return null;
+                                        },
+                                        maxLines: 4,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Container(
+                                      height: 100,
+                                      width: mediaQueryWidht * 0.429,
+                                      // width: 178,
+                                      child: Container(
+                                        child: TextFormField(
+                                          style: GoogleFonts.lato(
+                                              color: Colors.grey.shade600,
+                                              fontWeight: FontWeight.w900,
+                                              letterSpacing: 1),
+                                          controller: _alamatsekarang,
+                                          decoration: InputDecoration(
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey.shade600),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                              color: Color(0xfff012ac0),
+                                            )),
+                                            contentPadding: EdgeInsets.only(
+                                                bottom: 5,
+                                                right: 5,
+                                                top: 5,
+                                                left: 10),
+                                            // hintText: 'Masukan Alamat Sesuai KTP',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                          ),
+                                          maxLines: 4,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    activeColor: Color(0xfff012ac0),
+                                    value: isAlamatSesuaiKTP,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isAlamatSesuaiKTP = value ?? false;
+                                        if (isAlamatSesuaiKTP) {
+                                          _alamatsekarang.text =
+                                              _alamatktp.text;
+                                        } else {
+                                          _alamatsekarang.text = '';
+                                        }
+                                      });
+                                    }),
+                                Text(
+                                  "Silahkan Klik Di Sini Jika Alamat Sama",
+                                  style: GoogleFonts.lato(
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 1,
+                                      color: Color(0xfff012ac0)),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Nama Intansi/Sekolah:',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1),
+                            ),
+                            SizedBox(height: 5),
+                            TextFormField(
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1),
+                              controller: _namaSekolah,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                hintText: 'Masukan Nama Intansi/Sekolah',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'No. Telp. / Handphon:',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1),
+                            ),
+                            SizedBox(height: 5),
+                            TextFormField(
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1),
+                              controller: _nomorhp,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(13),
+                              ], // Menetapkan agar hanya angka yang dapat dimasukkan
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                hintText: 'Masukan Nomor HP',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Nomor HP Tidak Boleh Kosong";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.number,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Tempat/Tgl Lahir:',
+                              style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1),
+                            ),
+                            SizedBox(height: 5),
+                            TextFormField(
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1),
+                              controller: _tglLahir,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade600),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Color(0xfff012ac0),
+                                )),
+                                hintText: 'Samarinda, 02/02/2002',
+                                hintStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1),
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Tanggal Lahir Tidak Boleh Kosong";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xfff012ac0),
+                              ),
+                              onPressed: () async {
+                                if (_gender == null) {
+                                  scaffoldMessengerKey.currentState
+                                      ?.hideCurrentSnackBar();
+                                  errorSnackBar(context,
+                                      'Jenis Kelamin Tidak Boleh Kosong');
+                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  //   content: Text(
+                                  //     'Jenis Kelamin Tidak Boleh Kosong',
+                                  //     style: GoogleFonts.lato(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         letterSpacing: 1),
+                                  //   ),
+                                  //   duration: Duration(milliseconds: 500),
+                                  //   backgroundColor: Colors.red,
+                                  // ));
+                                  return null;
+                                }
+                                if (formKey.currentState!.validate()) {
+                                  _navigateToConfirmationPage(context);
+                                }
+                              },
+                              child: Text(
+                                'Submit',
+                                style: GoogleFonts.lato(
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1,
+                                    fontSize: 15,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            // SafeArea(
+                            //   child: ElevatedButton(
+                            //     style: ElevatedButton.styleFrom(
+                            //         backgroundColor: Colors.red),
+                            //     onPressed: () {
+                            //       _resetForm();
+                            //     },
+                            //     child: Text('Clear'),
                             //   ),
-                            //   duration: Duration(milliseconds: 500),
-                            //   backgroundColor: Colors.red,
-                            // ));
-                            return null;
-                          }
-                          if (formKey.currentState!.validate()) {
-                            _navigateToConfirmationPage(context);
-                          }
-                        },
-                        child: Text(
-                          'Submit',
-                          style: GoogleFonts.lato(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                              fontSize: 15,
-                              color: Colors.white),
+                            // ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10),
-                      // SafeArea(
-                      //   child: ElevatedButton(
-                      //     style: ElevatedButton.styleFrom(
-                      //         backgroundColor: Colors.red),
-                      //     onPressed: () {
-                      //       _resetForm();
-                      //     },
-                      //     child: Text('Clear'),
-                      //   ),
-                      // ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 

@@ -15,9 +15,7 @@ class BottomNavbar extends StatefulWidget {
 List Screens = [
   Home(),
   MyFormPage(),
-  halamanbuku(
-    c1: null,
-  ),
+  halamanbuku(),
   Profil(),
 ];
 
