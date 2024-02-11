@@ -1,8 +1,4 @@
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/detailbuku.dart';
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/screenbuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/form/form.dart';
-import 'package:aplikasi_daftar_angota_perpus/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'splashscreens.dart';
 import 'screens/login/login.dart';
