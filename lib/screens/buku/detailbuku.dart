@@ -215,7 +215,7 @@ class _DetailBukuState extends State<DetailBuku> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'What`s it about?',
+                              'Deskripsi',
                               style: GoogleFonts.lato(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

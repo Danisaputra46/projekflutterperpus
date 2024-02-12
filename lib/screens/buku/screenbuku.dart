@@ -1,10 +1,14 @@
+import 'package:aplikasi_daftar_angota_perpus/Services/apibuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/sejarah.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/pendidikan.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/drawer/drawer.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/modelbuku.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/hasilsearch.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../category/dongeng.dart';
+import 'dart:convert';
 
 // ignore: must_be_immutable
 class halamanbuku extends StatefulWidget {
@@ -13,6 +17,23 @@ class halamanbuku extends StatefulWidget {
 }
 
 class _halamanbukuState extends State<halamanbuku> {
+  TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void searchBooks(String query) async {
+    final response = await BukuService().search(query);
+    if (response.statusCode == 200) {
+      setState(() {});
+    } else {
+      print('Error: ${response.reasonPhrase}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // final MediaQueryHeight = MediaQuery.of(context).size.height;
@@ -71,12 +92,13 @@ class _halamanbukuState extends State<halamanbuku> {
                             child: Container(
                               height: 40,
                               child: TextField(
+                                controller: _searchController,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
                                     contentPadding: EdgeInsets.all(10),
                                     hintText: "Search Book...",
-                                    prefixIcon: Icon(Icons.search),
+                                    suffixIcon: Icon(Icons.search),
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(40),
                                         borderSide: BorderSide.none)),
@@ -87,7 +109,15 @@ class _halamanbukuState extends State<halamanbuku> {
                             height: 30,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              String query = _searchController.text;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        hasilsearch(query: query),
+                                  ));
+                            },
                             child: Text(
                               'SEARCH',
                               style: TextStyle(
