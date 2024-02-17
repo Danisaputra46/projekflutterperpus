@@ -1,4 +1,3 @@
-// import 'package:aplikasi_daftar_angota_perpus/tampildata/alldata.dart';
 import 'package:aplikasi_daftar_angota_perpus/Services/snackbar.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/form/controller/confirmdata.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,7 @@ class _MyFormPageState extends State<MyFormPage> {
     _delayedPageLoad();
   }
 
+  bool _isLoading = false;
   late String userName;
   late String userToken;
 
@@ -700,19 +700,29 @@ class _MyFormPageState extends State<MyFormPage> {
                                       ?.hideCurrentSnackBar();
                                   errorSnackBar(context,
                                       'Jenis Kelamin Tidak Boleh Kosong');
-                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  //   content: Text(
-                                  //     'Jenis Kelamin Tidak Boleh Kosong',
-                                  //     style: GoogleFonts.lato(
-                                  //         fontWeight: FontWeight.bold,
-                                  //         letterSpacing: 1),
-                                  //   ),
-                                  //   duration: Duration(milliseconds: 500),
-                                  //   backgroundColor: Colors.red,
-                                  // ));
                                   return null;
                                 }
                                 if (formKey.currentState!.validate()) {
+                                  setState(() {
+                                    _isLoading =
+                                        true; // Set _isLoading menjadi true sebelum navigasi
+                                  });
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: CircularProgressIndicator(
+                                            color: Color(0xfff012ac0),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  await Future.delayed(Duration(seconds: 1));
                                   _navigateToConfirmationPage(context);
                                 }
                               },
@@ -789,6 +799,12 @@ class _MyFormPageState extends State<MyFormPage> {
           listprofesi: listprofesi,
         ),
       ),
-    );
+    ).then((value) {
+      // Setelah kembali dari halaman konfirmasi, set _isLoading kembali menjadi false
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    });
   }
 }

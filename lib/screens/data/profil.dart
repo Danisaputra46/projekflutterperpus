@@ -143,7 +143,8 @@ class _ProfilState extends State<Profil> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${anggotaData['nama']}'.toUpperCase(),
+                                      '${anggotaData['nama'] != null ? anggotaData['nama'] : "Data Belum Ada"}'
+                                          .toUpperCase(),
                                       style: GoogleFonts.lato(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -151,7 +152,7 @@ class _ProfilState extends State<Profil> {
                                       ),
                                     ),
                                     Text(
-                                      '${anggotaData['email']}',
+                                      '${anggotaData['email'] != null ? anggotaData['email'] : "Data Belum Ada"}',
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -193,7 +194,7 @@ class _ProfilState extends State<Profil> {
                                     ),
                                   ),
                                   Text(
-                                    '${anggotaData['nik']}',
+                                    '${anggotaData['nik'] != null ? anggotaData['nik'] : "Data Belum Ada"}',
                                     style: GoogleFonts.lato(
                                         color: Colors.grey,
                                         fontSize: 16,
@@ -226,7 +227,7 @@ class _ProfilState extends State<Profil> {
                                   ),
                                 ),
                                 Text(
-                                  '${anggotaData['notelpon']}',
+                                  '${anggotaData['notelpon'] != null ? anggotaData['notelpon'] : "Data Belum Ada"}',
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 16,
@@ -272,7 +273,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               Flexible(
                                 child: Text(
-                                  '${anggotaData['pendidikanterakhir']}',
+                                  '${anggotaData['pendidikanterakhir'] != null ? anggotaData['pendidikanterakhir'] : "Data Belum Ada"}',
                                   style: GoogleFonts.lato(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -307,7 +308,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               Flexible(
                                 child: Text(
-                                  '${(anggotaData['profesi'])}',
+                                  '${(anggotaData['profesi'] != null ? anggotaData['profesi'] : "Data Belum Ada")}',
                                   style: GoogleFonts.lato(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -351,7 +352,7 @@ class _ProfilState extends State<Profil> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Text(
-                                    '${anggotaData['intansisekolah']}',
+                                    '${anggotaData['intansisekolah'] != null ? anggotaData['intansisekolah'] : "Data Belum Ada"}',
                                     style: GoogleFonts.lato(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -394,7 +395,7 @@ class _ProfilState extends State<Profil> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Text(
-                                    '${anggotaData['alamatsekarang']}',
+                                    '${anggotaData['alamatsekarang'] != null ? anggotaData['alamatsekarang'] : "Data Belum Ada"}',
                                     style: GoogleFonts.lato(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -435,7 +436,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               Flexible(
                                 child: Text(
-                                  '${anggotaData['jeniskelamin']}',
+                                  '${anggotaData['jeniskelamin'] != null ? anggotaData['jeniskelamin'] : "Data Belum Ada"}',
                                   style: GoogleFonts.lato(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -470,7 +471,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               Flexible(
                                 child: Text(
-                                  '${anggotaData['tgllahir']}',
+                                  '${anggotaData['tgllahir'] != null ? anggotaData['tgllahir'] : "Data Belum Ada"}',
                                   style: GoogleFonts.lato(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,

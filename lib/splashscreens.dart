@@ -25,7 +25,13 @@ class _LoadingState extends State<Loading> {
       backgroundColor:
           Colors.transparent, // Make the scaffold background transparent
       body: Container(
-        color: Colors.grey.shade300,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.white, Colors.green],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft)),
+        // color: Colors.grey.shade300,
         // decoration: BoxDecoration(
         //   image: DecorationImage(
         //     image: AssetImage('assets/splash_screens/background.png'),

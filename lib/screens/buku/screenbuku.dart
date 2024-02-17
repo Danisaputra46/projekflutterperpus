@@ -3,12 +3,10 @@ import 'package:aplikasi_daftar_angota_perpus/category/sejarah.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/pendidikan.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/drawer/drawer.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/modelbuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/hasilsearch.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../category/dongeng.dart';
-import 'dart:convert';
 
 // ignore: must_be_immutable
 class halamanbuku extends StatefulWidget {

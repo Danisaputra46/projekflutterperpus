@@ -26,9 +26,6 @@ class _sejarahState extends State<sejarah> {
   // Fungsi untuk memuat data buku dari backend Laravel Anda
   void _loadDataBuku(String kategori) async {
     try {
-      // Ganti URL sesuai dengan URL endpoint API Anda
-      // var url = Uri.parse('http://192.168.1.14:8000/api/daftarbuku/$kategori');
-      // var response = await http.get(url);
       final response = await BukuService().kategori(kategori);
 
       if (response.statusCode == 200) {

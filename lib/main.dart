@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'splashscreens.dart';
 import 'screens/login/login.dart';
 import 'package:flutter/services.dart';
-import './screens/buku/screenbuku.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

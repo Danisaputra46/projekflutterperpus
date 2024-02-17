@@ -80,10 +80,13 @@ flutter:
     - assets/splash_screens/background.png
     - assets/splash_screens/logokotasamarinda.png
     - assets/splash_screens/panduan/backgroundperpus.png
+
     - assets/menu/form.png
+
     - assets/dashboard/user.png
     - assets/dashboard/woman.png
     - assets/dashboard/man.png
+
     - assets/profil/profilecowo.png
     - assets/profil/office.png
     - assets/profil/location.png
@@ -91,12 +94,17 @@ flutter:
     - assets/profil/male-and-female.png
     - assets/profil/profilcewe.png
     - assets/profil/profilkosong.png
+
     - assets/icons/bubbles.svg
     - assets/icons/fail.svg
     - assets/icons/close.svg
+    - assets/icons/warning.svg
+    - assets/icons/success.svg
+
     - assets/buku/buku_flutter.jpg
     - assets/buku/buku_sejarah.jpeg
     - assets/buku/buku_dongeng.jpg
+
     - assets/halamanbuku/background.png
     - assets/halamanbuku/perpustakaan.jpg
     - assets/halamanbuku/overlay.png

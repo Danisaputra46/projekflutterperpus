@@ -1,7 +1,10 @@
 // import 'package:flutter/material.dart';
 
 // String baseURL = "http://10.0.2.2:8000/api/";
-String baseURL = "http://192.168.1.14:8000/api/";
+// String baseURL = "http://192.168.1.14:8000/api/";
+String baseURL = "https://perpussmd.000webhostapp.com/api/";
+// String baseURLbuku = "https://perpussmd.000webhostapp.com/api/";
+String baseURLgambar = "https://perpussmd.000webhostapp.com/";
 // String baseURL = "http://127.0.0.1:8000/api/";
 
 Map<String, String> headers = {

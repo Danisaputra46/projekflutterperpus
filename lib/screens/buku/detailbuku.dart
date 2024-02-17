@@ -25,9 +25,6 @@ class _DetailBukuState extends State<DetailBuku> {
 
   void _loadDetailBuku(int idBuku) async {
     try {
-      // var url = Uri.parse(
-      //     'http://192.168.1.14:8000/api/daftarbukuid/$idBuku'); // Sesuaikan dengan URL endpoint API Anda
-      // var response = await http.get(url);
       final response = await BukuService().bukuid(idBuku);
 
       if (response.statusCode == 200) {

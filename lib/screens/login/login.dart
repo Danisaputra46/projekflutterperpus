@@ -19,15 +19,34 @@ class _LoginPageState extends State<LoginPage> {
   String _username = '';
   String _password = '';
 
-  loginPressed() async {
+  loginPressed(BuildContext context) async {
     if (_username.isNotEmpty && _password.isNotEmpty) {
+      // Menampilkan loading
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(
+                color: Color(0xfff012ac0),
+              ),
+            ),
+          );
+        },
+      );
+      await Future.delayed(Duration(seconds: 1));
       http.Response response = await AuthServices.login(_username, _password);
+
+      // Menutup dialog loading
+      Navigator.pop(context);
 
       if (response.statusCode == 200) {
         Map<String, dynamic>? responseMap = jsonDecode(response.body);
 
         if (responseMap != null && responseMap.containsKey('user')) {
-          // Simpan data pengguna ke SharedPreferences
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setInt('id', responseMap['user']['id']);
           preferences.setString('username', responseMap['user']['username']);
@@ -37,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           preferences.setString('token', responseMap['token']);
 
           // Navigasi ke halaman Home
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (BuildContext context) => BottomNavbar(),
@@ -370,7 +389,8 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.center,
                         child: ElevatedButton(
                           onPressed: () {
-                            loginPressed();
+                            // loginPressed();
+                            loginPressed(context);
                             // loginUser();
                           },
                           style: ElevatedButton.styleFrom(

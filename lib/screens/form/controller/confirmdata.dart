@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:aplikasi_daftar_angota_perpus/Services/snackbar.dart';
 import 'package:aplikasi_daftar_angota_perpus/bottomnavbar/bottomnavbar.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/form/controller/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../../../Services/globals.dart';
 
-class Confirmasi extends StatelessWidget {
+class Confirmasi extends StatefulWidget {
   final int userId;
   final String nama;
   final String nik;
@@ -34,79 +37,113 @@ class Confirmasi extends StatelessWidget {
     required this.listprofesi,
   });
 
-  Future<bool> checkIfIdFluteruserExists(int userId) async {
-    // Ganti baseURL dan endpoint sesuai dengan backend Anda
-    String url = baseURL + 'anggota/$userId';
+  @override
+  State<Confirmasi> createState() => _ConfirmasiState();
+}
 
-    try {
-      http.Response response = await http.get(
-        Uri.parse(url),
-        headers: headers,
-      );
-
-      // Pemeriksaan apakah status code 200 dan response body berisi true
-      return (response.statusCode == 200 &&
-          response.body.toLowerCase() == 'true');
-    } catch (error) {
-      // Tangani kesalahan jika terjadi
-      print('Error: $error');
-      return false; // Secara default, anggap bahwa id_fluteruser tidak ada
-    }
-  }
+class _ConfirmasiState extends State<Confirmasi> {
+  bool _isButtonDisabled = false;
 
   void _saveDataa(BuildContext context) async {
+    if (_isButtonDisabled)
+      return; // Jangan lakukan apa-apa jika tombol sedang dinonaktifkan
+
+    setState(() {
+      _isButtonDisabled = true; // Nonaktifkan tombol
+    });
+
     // Lakukan pengecekan terlebih dahulu apakah id_fluteruser sudah ada atau belum
-    bool isIdExist = await checkIfIdFluteruserExists(userId);
+    bool isIdExist = await checkIfIdFluteruserExists(widget.userId);
 
     if (isIdExist) {
-      final snackBar = SnackBar(
-          content: const Text("ID sudah ada, data tidak dapat disimpan"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      errorSnackBar(context, 'ID sudah ada, data tidak dapat disimpan');
+      setState(() {
+        _isButtonDisabled = false; // Aktifkan tombol kembali
+      });
     } else {
-      // Jika id_fluteruser belum ada, lanjutkan dengan menyimpan data
-      await http.post(Uri.parse(baseURL + 'anggota/$userId'), body: {
-        "id_fluteruser": userId.toString(),
-        "nama": nama,
-        "nik": nik,
-        "email": email,
-        "alamatktp": alamatktp,
-        "alamatsekarang": alamatsekarang,
-        "intansisekolah": namasekolah,
-        "notelpon": nomorhp,
-        "tgllahir": tgllahir,
-        "profesi": listprofesi,
-        "pendidikanterakhir": pendidikanterakhir,
-        "jeniskelamin": gender,
-      }).then((response) {
-        if (response.statusCode == 200) {
-          final snackBar =
-              SnackBar(content: const Text("Data Berhasil Di Simpan"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => BottomNavbar()),
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(
+                color: Color(0xfff012ac0),
+              ),
+            ),
           );
-        } else {
-          errorSnackBar(context, 'Tidak bisa Input Data 2 Kali');
-          // print(response.body);
-          // final snackBar = SnackBar(
-          //   content: const Text("Tidak bisa Input Data 2 Kali"),
-          //   backgroundColor: Colors.red,
-          //   duration: Duration(milliseconds: 500),
-          // );
-          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          // print('Error: ${response.statusCode} - ${response.body}');
+        },
+      );
+      await Future.delayed(Duration(seconds: 1));
+      try {
+        bool isNikExist = await checkIfNikExists(widget.nik);
+
+        if (isNikExist) {
+          errorSnackBar(context, 'NIK sudah ada, data tidak dapat disimpan');
+          // Tutup dialog loading
+          Navigator.pop(context);
+          setState(() {
+            _isButtonDisabled = false; // Aktifkan tombol kembali
+          });
+          return; // Keluar dari fungsi _saveDataa
         }
-      }).catchError((error) {
-        print('Error: $error');
+
+        await http.post(Uri.parse(baseURL + 'anggota/${widget.userId}'), body: {
+          "id_fluteruser": widget.userId.toString(),
+          "nama": widget.nama,
+          "nik": widget.nik,
+          "email": widget.email,
+          "alamatktp": widget.alamatktp,
+          "alamatsekarang": widget.alamatsekarang,
+          "intansisekolah": widget.namasekolah,
+          "notelpon": widget.nomorhp,
+          "tgllahir": widget.tgllahir,
+          "profesi": widget.listprofesi,
+          "pendidikanterakhir": widget.pendidikanterakhir,
+          "jeniskelamin": widget.gender,
+        }).then((response) {
+          if (response.statusCode == 200) {
+            successSnackBar(context, 'Data Berhasil Di Simpan');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavbar()),
+            );
+          } else {
+            errorSnackBar(context, 'Tidak bisa Input Data 2 Kali');
+            // Tutup dialog loading
+            Navigator.pop(context);
+            setState(() {
+              _isButtonDisabled = false; // Aktifkan tombol kembali
+            });
+          }
+        }).catchError((error) {
+          print('Error: $error');
+          final snackBar = SnackBar(
+              content:
+                  const Text("Terjadi Kesalahan, Silakan Coba Lagi Nanti"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // Tutup dialog loading
+          Navigator.pop(context);
+          setState(() {
+            _isButtonDisabled = false; // Aktifkan tombol kembali
+          });
+        });
+      } catch (e) {
+        print('Error: $e');
         final snackBar = SnackBar(
             content: const Text("Terjadi Kesalahan, Silakan Coba Lagi Nanti"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      });
+        // Tutup dialog loading
+        Navigator.pop(context);
+        setState(() {
+          _isButtonDisabled = false; // Aktifkan tombol kembali
+        });
+      }
     }
   }
 
-// errorSnackBar(context, 'Masukkan semua kolom yang diperlukan');
   @override
   Widget build(BuildContext context) {
     final mediaQueryWidht = MediaQuery.of(context).size.width;
@@ -155,7 +192,7 @@ class Confirmasi extends StatelessWidget {
                                     letterSpacing: 1),
                               ),
                               Text(
-                                '$userId',
+                                '${widget.userId}',
                                 style: GoogleFonts.lato(
                                     fontSize: 20, fontWeight: FontWeight.w900),
                               ),
@@ -199,7 +236,7 @@ class Confirmasi extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
-                                      '$nama',
+                                      '${widget.nama}',
                                       style: GoogleFonts.lato(
                                           color: Colors.grey.shade600,
                                           fontSize: 16,
@@ -244,7 +281,7 @@ class Confirmasi extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
-                                      '$nik',
+                                      '${widget.nik}',
                                       style: GoogleFonts.lato(
                                           color: Colors.grey.shade600,
                                           fontSize: 16,
@@ -289,7 +326,7 @@ class Confirmasi extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
-                                      '$nomorhp',
+                                      '${widget.nomorhp}',
                                       style: GoogleFonts.lato(
                                           color: Colors.grey.shade600,
                                           fontSize: 16,
@@ -340,7 +377,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$pendidikanterakhir',
+                                '${widget.pendidikanterakhir}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -388,7 +425,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$listprofesi',
+                                '${widget.listprofesi}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -436,7 +473,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$gender',
+                                '${widget.gender}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -484,7 +521,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$email',
+                                '${widget.email}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -537,7 +574,7 @@ class Confirmasi extends StatelessWidget {
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Text(
-                                        '$alamatktp',
+                                        '${widget.alamatktp}',
                                         style: GoogleFonts.lato(
                                             color: Colors.grey.shade600,
                                             fontSize: 16,
@@ -584,7 +621,7 @@ class Confirmasi extends StatelessWidget {
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Text(
-                                        '$alamatsekarang',
+                                        '${widget.alamatsekarang}',
                                         style: GoogleFonts.lato(
                                             color: Colors.grey.shade600,
                                             fontSize: 16,
@@ -637,7 +674,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$namasekolah',
+                                '${widget.namasekolah}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -685,7 +722,7 @@ class Confirmasi extends StatelessWidget {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Text(
-                                '$tgllahir',
+                                '${widget.tgllahir}',
                                 style: GoogleFonts.lato(
                                     color: Colors.grey.shade600,
                                     fontSize: 16,
@@ -709,13 +746,17 @@ class Confirmasi extends StatelessWidget {
                         // elevation: 10,
                         minimumSize: Size(double.infinity, 48),
                       ),
-                      onPressed: () {
-                        _saveDataa(context);
-                        // _saveData(context).then((value) {
-                        //   Navigator.push(context,
-                        //       MaterialPageRoute(builder: (context) => MyFormPage()));
-                        // });
-                      },
+                      onPressed: _isButtonDisabled
+                          ? null
+                          : () {
+                              _saveDataa(context);
+                            },
+
+                      // _saveData(context).then((value) {
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => MyFormPage()));
+                      // });
+
                       child: Text(
                         'Simpan Data',
                         style: GoogleFonts.lato(

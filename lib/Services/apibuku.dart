@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:aplikasi_daftar_angota_perpus/Services/globals.dart';
 
@@ -44,7 +43,7 @@ class BukuService {
 
   // Fungsi untuk mendapatkan gambar buku berdasarkan nama file
   static String getGambarBukuUrl(String namaFile) {
-    return baseURL + 'gambarbuku/$namaFile';
+    return baseURLgambar + 'fotobuku/$namaFile';
   }
 
   Future<http.Response> search(String query) async {

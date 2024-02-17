@@ -19,15 +19,36 @@ class _RegisterPageState extends State<RegisterPage> {
   String _lastname = '';
   String _username = '';
   String _password = '';
+  bool _isLoading = false;
 
-  createAccountPressed() async {
+  createAccountPressed(BuildContext context) async {
     bool nameValid = RegExp(r'^[a-zA-Z0-9]{3,16}$').hasMatch(_username);
     if (nameValid) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(
+                color: Color(0xfff012ac0),
+              ),
+            ),
+          );
+        },
+      );
+
+      await Future.delayed(Duration(milliseconds: 1500));
       http.Response response = await AuthServices.register(
           _username, _password, _firstname, _lastname);
+      Navigator.pop(context);
       Map<String, dynamic> responseMap =
           jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
+        // Tampilkan snackbar setelah registrasi berhasil
+        successSnackBar(context, 'Register Berhasil');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -431,7 +452,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           alignment: Alignment.center,
                           child: ElevatedButton(
                             onPressed: () {
-                              createAccountPressed();
+                              createAccountPressed(context);
                             },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
