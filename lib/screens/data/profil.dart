@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:aplikasi_daftar_angota_perpus/loading/loadingprofil/loadingprofil.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Services/auth_services.dart';
@@ -84,7 +84,7 @@ class _ProfilState extends State<Profil> {
   bool isPageLoaded = false;
 
   void _delayedPageLoad() {
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
         isPageLoaded = true; // Setelah 1 detik, halaman dianggap sudah ter-load
       });
@@ -109,11 +109,7 @@ class _ProfilState extends State<Profil> {
           backgroundColor: Color(0xfff012ac0),
           automaticallyImplyLeading: false),
       body: !isPageLoaded
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Color(0xfff012ac0),
-              ),
-            )
+          ? loadingprofil()
           : Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: Container(
@@ -121,6 +117,7 @@ class _ProfilState extends State<Profil> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // loadingprofil(),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(

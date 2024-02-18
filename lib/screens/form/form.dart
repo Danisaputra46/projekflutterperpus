@@ -1,4 +1,6 @@
 import 'package:aplikasi_daftar_angota_perpus/Services/snackbar.dart';
+import 'package:aplikasi_daftar_angota_perpus/loading/loadingform/loadingform.dart';
+import 'package:aplikasi_daftar_angota_perpus/loading/loadingform/skeltonform.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/form/controller/confirmdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -113,11 +115,7 @@ class _MyFormPageState extends State<MyFormPage> {
           centerTitle: true,
           automaticallyImplyLeading: false),
       body: !isPageLoaded
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Color(0xfff012ac0),
-              ),
-            )
+          ? loadingform()
           : SafeArea(
               child: Container(
                 color: Color.fromARGB(255, 241, 241, 241),

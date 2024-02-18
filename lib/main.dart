@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Loading(),
       routes: {
-        '/form': (context) => MyFormPage(), // Ganti form() menjadi MyFormPage()
-        // '/menu': (context) => Home(),
+        '/form': (context) => MyFormPage(),
         '/login': (context) => LoginPage(),
         '/loading': (context) => Loading(),
       },

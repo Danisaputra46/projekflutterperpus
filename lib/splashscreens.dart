@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/login/login.dart';
 
 class Loading extends StatefulWidget {
@@ -48,9 +49,10 @@ class _LoadingState extends State<Loading> {
               Container(
                 child: Text(
                   'Perpustakaan Kota Samarinda',
-                  style: TextStyle(
-                    fontSize: 23,
-                  ),
+                  style: GoogleFonts.lato(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1),
                 ),
               ),
               const SizedBox(
@@ -64,7 +66,8 @@ class _LoadingState extends State<Loading> {
                 height: 130,
               ),
               const CircularProgressIndicator.adaptive(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromARGB(255, 19, 100, 22)),
               )
             ],
           ),

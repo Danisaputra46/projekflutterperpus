@@ -1,4 +1,5 @@
 import 'package:aplikasi_daftar_angota_perpus/Services/apibuku.dart';
+import 'package:aplikasi_daftar_angota_perpus/loading/loadingcategory/loadingcategorybuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/detailbuku.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -53,10 +54,10 @@ class _dongengState extends State<dongeng> {
     return Container(
       height: 240,
       child: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Color(0xfff012ac0),
-              ),
+          ? ListView.builder(
+              itemCount: 5,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => loadingbuku(),
             )
           : ListView.builder(
               scrollDirection: Axis.horizontal,

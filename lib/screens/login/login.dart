@@ -133,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
                                 shadows: [
                                   Shadow(
                                     color: Colors.black,
