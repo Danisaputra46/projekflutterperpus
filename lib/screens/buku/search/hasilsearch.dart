@@ -1,3 +1,4 @@
+import 'package:aplikasi_daftar_angota_perpus/loading/hasilcategory/loadinghasilcategory.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/modelbuku.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -80,10 +81,11 @@ class _hasilsearchState extends State<hasilsearch> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-              color: Color(0xfff012ac0),
-            ))
+          ? ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: 10,
+              itemBuilder: (context, index) => loadinghasilcategory(),
+            )
           : _searchResults
                   .isEmpty // Tambahkan pengecekan apakah _searchResults kosong
               ? Center(

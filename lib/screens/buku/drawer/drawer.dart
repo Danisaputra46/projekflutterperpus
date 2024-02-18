@@ -1,4 +1,4 @@
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasilcategory.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -33,7 +33,8 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => hasil(kategori: 'Pendidikan')));
+                      builder: (context) =>
+                          hasilcategory(kategori: 'Pendidikan')));
             },
           ),
           ListTile(
@@ -46,7 +47,8 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => hasil(kategori: 'Sejarah')));
+                      builder: (context) =>
+                          hasilcategory(kategori: 'Sejarah')));
             },
           ),
           ListTile(
@@ -57,7 +59,8 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => hasil(kategori: 'Dongeng')));
+                      builder: (context) =>
+                          hasilcategory(kategori: 'Dongeng')));
             },
           ),
         ],

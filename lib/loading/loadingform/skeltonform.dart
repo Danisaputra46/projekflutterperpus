@@ -19,7 +19,7 @@ class Skeltonform extends StatelessWidget {
       width: widhth,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.09),
+          color: Colors.black.withOpacity(0.05),
           borderRadius: BorderRadius.all(Radius.circular(5))),
       child: Stack(
         children: [
@@ -30,8 +30,8 @@ class Skeltonform extends StatelessWidget {
               height: h,
               width: w,
               decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.05),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
+                  color: Colors.black.withOpacity(0.06),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
           // Widget lain yang ingin ditampilkan di dalam container
@@ -56,7 +56,7 @@ class Skeltonform1 extends StatelessWidget {
       width: widhth,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.09),
+          color: Colors.black.withOpacity(0.05),
           borderRadius: BorderRadius.all(Radius.circular(5))),
     );
   }
@@ -77,7 +77,7 @@ class Skeltonform2 extends StatelessWidget {
       width: widhth,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.09),
+          color: Colors.black.withOpacity(0.05),
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Stack(
         children: [
@@ -88,8 +88,8 @@ class Skeltonform2 extends StatelessWidget {
               height: 25,
               width: 50,
               decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.05),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
+                  color: Colors.black.withOpacity(0.06),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
           Positioned(
@@ -99,7 +99,7 @@ class Skeltonform2 extends StatelessWidget {
               height: 10,
               width: 10,
               decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withOpacity(0.06),
                   borderRadius: BorderRadius.all(Radius.circular(0))),
             ),
           ),
@@ -125,7 +125,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
       width: widhth,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.09),
+          color: Colors.black.withOpacity(0.05),
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Stack(
         children: [
@@ -136,7 +136,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
               height: 25,
               width: 150,
               decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withOpacity(0.06),
                   borderRadius: BorderRadius.all(Radius.circular(5))),
             ),
           ),
@@ -149,7 +149,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
                   height: 23,
                   width: 23,
                   decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.06),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                 ),
                 Container(
@@ -157,7 +157,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
                   height: 23,
                   width: 100,
                   decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.06),
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                 ),
               ],
@@ -172,7 +172,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
                   height: 23,
                   width: 23,
                   decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.06),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                 ),
                 Container(
@@ -180,7 +180,7 @@ class Skeltonformjeniskelamin extends StatelessWidget {
                   height: 23,
                   width: 100,
                   decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.06),
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                 ),
               ],

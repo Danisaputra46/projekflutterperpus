@@ -2,7 +2,7 @@ import 'package:aplikasi_daftar_angota_perpus/Services/apibuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/sejarah.dart';
 import 'package:aplikasi_daftar_angota_perpus/category/pendidikan.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/drawer/drawer.dart';
-import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasil.dart';
+import 'package:aplikasi_daftar_angota_perpus/screens/buku/hasilcategory.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/search/hasilsearch.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -148,7 +148,8 @@ class _halamanbukuState extends State<halamanbuku> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => hasil(kategori: 'Pendidikan'),
+                            builder: (context) =>
+                                hasilcategory(kategori: 'Pendidikan'),
                           ),
                         );
                       },
@@ -179,7 +180,8 @@ class _halamanbukuState extends State<halamanbuku> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => hasil(kategori: 'Sejarah'),
+                            builder: (context) =>
+                                hasilcategory(kategori: 'Sejarah'),
                           ),
                         );
                       },
@@ -207,7 +209,8 @@ class _halamanbukuState extends State<halamanbuku> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => hasil(kategori: 'Dongeng'),
+                            builder: (context) =>
+                                hasilcategory(kategori: 'Dongeng'),
                           ),
                         );
                       },

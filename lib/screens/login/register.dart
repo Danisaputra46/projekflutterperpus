@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
               width: 30,
               height: 30,
               child: CircularProgressIndicator(
-                color: Color(0xfff012ac0),
+                color: Colors.green,
               ),
             ),
           );

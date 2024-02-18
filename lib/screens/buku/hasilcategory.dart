@@ -1,18 +1,19 @@
+import 'package:aplikasi_daftar_angota_perpus/loading/hasilcategory/loadinghasilcategory.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:aplikasi_daftar_angota_perpus/Services/apibuku.dart';
 import 'package:aplikasi_daftar_angota_perpus/screens/buku/detailbuku.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class hasil extends StatefulWidget {
+class hasilcategory extends StatefulWidget {
   final String kategori;
-  hasil({required this.kategori});
+  hasilcategory({required this.kategori});
 
   @override
-  State<hasil> createState() => _hasilState();
+  State<hasilcategory> createState() => _hasilcategoryState();
 }
 
-class _hasilState extends State<hasil> {
+class _hasilcategoryState extends State<hasilcategory> {
   List<dynamic> daftarBuku = [];
   bool isLoading = true;
 
@@ -57,10 +58,11 @@ class _hasilState extends State<hasil> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-              color: Color(0xfff012ac0),
-            ))
+          ? ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: 10,
+              itemBuilder: (context, index) => loadinghasilcategory(),
+            )
           : Container(
               margin: EdgeInsets.only(top: 10),
               child: ListView.builder(
